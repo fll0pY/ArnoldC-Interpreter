@@ -1,0 +1,25 @@
+run: build
+	rm -rf ./output
+	mkdir ./output
+	for f in ./tests/*.ac; \
+	do \
+	filename=$$(basename "$$f"); \
+	java -cp bin ro/poo/Interpreter $$f ./output/"$${filename%.*}".out ./output/"$${filename%.*}".ast; \
+	done
+
+build: 
+	find -name "*.java" > sources
+	rm -rf bin
+	mkdir bin
+	javac @sources -d bin
+
+doc:
+	rm -rf docs
+	mkdir docs
+	javadoc -d docs src.ro.poo $$(find -name "*.java")
+	
+clean:
+	rm -rf sources
+	rm -rf bin
+	rm -rf docs
+	rm -rf output
